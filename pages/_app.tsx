@@ -4,7 +4,6 @@ import { store } from "./../store/store";
 import { Provider } from "react-redux";
 import { SessionProvider } from "next-auth/react";
 import "../styles/index.css";
-import CurrencyDisplayer from "../components/CurrencyDisplayer";
 import Header from "../components/Header";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
@@ -18,7 +17,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
             <div className="p-5 w-full">
               <Component {...pageProps} />
             </div>
-            <CurrencyDisplayer />
           </div>
         </Provider>
       </SessionProvider>
