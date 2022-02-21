@@ -2,8 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "ts-node server/server.ts",
-    "build": "next build && next export",
-    "start": "next start",
+    "build": "next build && tsc --project tsconfig.server.json",
+    "start": "cross-env NODE_ENV=production node dist/index.j",
     "type-check": "tsc"
   },
   "dependencies": {
