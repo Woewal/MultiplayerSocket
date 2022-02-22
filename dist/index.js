@@ -41,7 +41,7 @@ nextApp.prepare().then(async () => {
     });
     io.on("connection", (socket) => {
         socket.on("joinroom", () => {
-            console.log('test');
+            console.log("test");
         });
         socket.on("disconnect", () => {
             console.log("client disconnected");
@@ -49,7 +49,7 @@ nextApp.prepare().then(async () => {
     });
     app.all("*", (req, res) => nextHandler(req, res));
     server.listen(port, () => {
-        console.log(`> Ready on http://localhost:${port}`);
+        console.log(`> Server listening at http://localhost:${port} as ${dev ? "development" : process.env.NODE_ENV}`);
     });
 });
 //# sourceMappingURL=index.js.map
