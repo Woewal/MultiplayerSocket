@@ -3,7 +3,7 @@ import * as http from "http";
 import next, { NextApiHandler } from "next";
 import * as socketio from "socket.io";
 
-const port: number = parseInt(process.env.PORT || "8000", 10);
+const port: number = parseInt(process.env.PORT || "8000", 10) || 8000;
 const dev: boolean = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
 const nextHandler: NextApiHandler = nextApp.getRequestHandler();
