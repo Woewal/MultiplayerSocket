@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "ts-node server/index.ts",
     "build": "next build && tsc --project tsconfig.server.json",
-    "start": "node_modules/cross-env/src/bin/cross-env.js NODE_ENV=production ts-node server/index.ts",
+    "start": "cross-env NODE_ENV=production ts-node server/index.ts",
     "type-check": "tsc"
   },
   "dependencies": {
