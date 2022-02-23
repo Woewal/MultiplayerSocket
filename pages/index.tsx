@@ -13,7 +13,7 @@ const IndexPage = () => {
     setSocket(newSocket);
 
     setInterval(() => {
-      newSocket.emit("gyrovalues", deviceOrientation);
+      newSocket.emit("gyrovalues", JSON.stringify(deviceOrientation));
     }, 3000)
   }, []);
 
