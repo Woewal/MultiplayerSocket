@@ -13,14 +13,14 @@ const IndexPage = () => {
     setSocket(newSocket);
 
     setInterval(() => {
-      newSocket.emit("gyrovalues", JSON.stringify({a: deviceOrientation.alpha, b:deviceOrientation.beta, g:deviceOrientation.gamma}));
+      newSocket.emit("gyrovalues", JSON.stringify({a: deviceOrientation.alpha, b:deviceOrientation.beta, g:12}));
     }, 3000)
   }, []);
 
   const orientationInfo = (
       <li>
-        ɑ: <code>{deviceOrientation.alpha}</code>
-        b: <code>{deviceOrientation.beta}</code>
+        ɑ: <code>{deviceOrientation.alpha}</code><br/>
+        b: <code>{deviceOrientation.beta}</code><br/>
         c: <code>{deviceOrientation.gamma}</code>
       </li>
   );

@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 
+interface Orientation {
+    absolute: boolean;
+    alpha: number;
+    beta: number;
+    gamma: number;
+}
+
 const useDeviceOrientation = () => {
-  const [deviceOrientation, setDeviceOrientation] = useState({ absolute: false, alpha: Number, beta: Number, gamma: Number });
+  const [deviceOrientation, setDeviceOrientation] = useState<Orientation>();
 
   function handleDeviceOrientation(event) {
     setDeviceOrientation({
