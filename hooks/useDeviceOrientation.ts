@@ -8,7 +8,7 @@ interface Orientation {
 }
 
 const useDeviceOrientation = () => {
-  const [deviceOrientation, setDeviceOrientation] = useState<Orientation>();
+  const [deviceOrientation, setDeviceOrientation] = useState<Orientation>({absolute: false, alpha: 0, beta:0, gamma:0});
 
   function handleDeviceOrientation(event) {
     setDeviceOrientation({
