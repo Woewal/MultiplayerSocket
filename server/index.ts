@@ -26,6 +26,10 @@ nextApp.prepare().then(async () => {
       console.log("test");
     });
 
+    socket.on("gyrovalues", value => {
+      console.log(value);
+    })
+
     socket.on("disconnect", () => {
       console.log("client disconnected");
     });

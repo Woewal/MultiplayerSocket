@@ -2,26 +2,27 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import useDeviceOrientation from "hooks/useDeviceOrientation";
 
 const IndexPage = () => {
-  const [alpha, setAlpha] = useState(0);
   const [socket, setSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap>>();
+  const deviceOrientation = useDeviceOrientation();
 
   useEffect(() => {
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener("deviceorientation", (event) => {
-        setAlpha(event.alpha);
-      });
+    const newSocket = io();
+    setSocket(newSocket);
 
-      const newSocket = io();
-      setSocket(newSocket);
-    }
+    setInterval(() => {
+      newSocket.emit("gyrovalues", deviceOrientation);
+    })
   }, []);
 
   const orientationInfo = (
     <ul>
       <li>
-        ɑ: <code>{alpha}</code>
+        ɑ: <code>{deviceOrientation.alpha}</code>
+        b: <code>{deviceOrientation.beta}</code>
+        c: <code>{deviceOrientation.gamma}</code>
       </li>
     </ul>
   );
