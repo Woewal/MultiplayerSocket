@@ -12,8 +12,8 @@ const useGyroPointer = () => {
   function handleDeviceOrientation(event) {
     event.stopPropagation();
     setPointerCoordinates({
-      x: Math.min(Math.max(Math.floor(event.beta), -45), 45),
-      y: Math.min(Math.max(Math.floor(event.gamma), -45), 45),
+      x: Math.min(Math.max(Math.floor(event.alpha), -45), 45),
+      y: Math.min(Math.max(Math.floor(event.beta), -45), 45),
     });
   }
 
