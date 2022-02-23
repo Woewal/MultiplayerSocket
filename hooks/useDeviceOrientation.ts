@@ -18,7 +18,7 @@ const useDeviceOrientation = () => {
       gamma: event.gamma
     })
   }
-
+  
   useEffect(() => {
     window.addEventListener('deviceorientation', handleDeviceOrientation, true);
 

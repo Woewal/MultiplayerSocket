@@ -3,30 +3,23 @@ import Layout from "../components/Layout";
 import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import useDeviceOrientation from "hooks/useDeviceOrientation";
+import useGyroPointer from "hooks/useGyroPointer";
 
 const IndexPage = () => {
-  const [socket, setSocket] =
-    useState<Socket<DefaultEventsMap, DefaultEventsMap>>();
-
+  const [socket, setSocket] = useState<Socket>();
+  const gyroPointer = useGyroPointer();
   const deviceOrientation = useDeviceOrientation();
 
   useEffect(() => {
     const newSocket = io();
     setSocket(newSocket);
-
-    setInterval(() => {
-      if (!socket) return;
-      socket.emit("gyrovalues", deviceOrientation);
-    }, 3000);
   }, []);
 
   const orientationInfo = (
     <li>
-      ɑ: <code>{deviceOrientation.alpha}</code>
+      x: <code>{gyroPointer.x}</code>
       <br />
-      b: <code>{deviceOrientation.beta}</code>
-      <br />
-      c: <code>{deviceOrientation.gamma}</code>
+      y: <code>{gyroPointer.y}</code>
     </li>
   );
 
