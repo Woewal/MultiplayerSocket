@@ -7,7 +7,7 @@ import useGyroPointer from "hooks/useGyroPointer";
 
 const IndexPage = () => {
   const [socket, setSocket] = useState<Socket>();
-  const gyroPointer = useGyroPointer();
+  const [pointerCoordinates, calibratePoint] = useGyroPointer();
   const deviceOrientation = useDeviceOrientation();
 
   useEffect(() => {
@@ -17,9 +17,9 @@ const IndexPage = () => {
 
   const orientationInfo = (
     <li>
-      x: <code>{gyroPointer.x}</code>
+      x: <code>{pointerCoordinates.x}</code>
       <br />
-      y: <code>{gyroPointer.y}</code>
+      y: <code>{pointerCoordinates.y}</code>
     </li>
   );
 
@@ -33,6 +33,12 @@ const IndexPage = () => {
             onClick={() => socket.emit("click")}
           >
             Fire
+          </button>
+          <button
+            className="bg-white rounded p-3"
+            onClick={() => calibratePoint()}
+          >
+            Calibrate
           </button>
         </div>
       </div>

@@ -8,7 +8,7 @@ interface PointerCoordinates {
 
 const rad = Math.PI / 180;
 
-const useGyroPointer = () => {
+const useGyroPointer = () : [PointerCoordinates, () => void] => {
   const [pointerCoordinates, setPointerCoordinates] =
     useState<PointerCoordinates>({ x: 0, y: 0 });
   const [currentQuaternion, setCurrentQuaternion] = useState<Quaternion>(
@@ -17,7 +17,8 @@ const useGyroPointer = () => {
   const [calibratedPoint, setCalibratedPoint] = useState<Quaternion>(
     Quaternion.fromEuler(0, 0, 0, "ZXY")
   );
-  const updateOrigin = () => {
+  const calibratePoint = () => {
+    console.log(currentQuaternion);
     setCalibratedPoint(currentQuaternion);
   };
 
@@ -32,15 +33,16 @@ const useGyroPointer = () => {
 
     const angles = toEuler(currentRotation.toVector());
 
-    setCurrentQuaternion(currentRotation.toVector());
-    console.log(angles);
+    setCurrentQuaternion(currentRotation);
 
-    //let dist = euler.map((angle, i) => calcDist(angle, angle));
+    const calibratedVector = calibratedPoint.toVector();
+
+    let dist = angles.map((angle, i) => calcDist(angle, calibratedVector[i]));
 
 
     setPointerCoordinates({
-       x: angles[0],
-       y: angles[1],
+       x: dist[0] / Math.PI,
+       y: dist[1] / Math.PI,
     });
   }
 
@@ -52,7 +54,7 @@ const useGyroPointer = () => {
     };
   }, []);
 
-  return pointerCoordinates;
+  return [pointerCoordinates, calibratePoint];
 };
 
 function toEuler(q) {
