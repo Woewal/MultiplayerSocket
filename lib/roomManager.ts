@@ -1,14 +1,13 @@
-// import Room from "./room";
+import Room from "./room";
 
-// class RoomManager {
-//     rooms : Room[] = [];
+class RoomManager {
+    rooms : Room[] = [];
 
-//     createNewRoom = (host:string) => {
-//         const room = new Room(host);
-//         this.rooms.push(room);
-//         return room;
-//     }
-// }
+    createNewRoom = (host:string) => {
+        const room = new Room(host);
+        this.rooms.push(room);
+        return room;
+    }
+}
 
-// export default new RoomManager();
-export {}
+export default new RoomManager();
