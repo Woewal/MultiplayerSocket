@@ -18,13 +18,11 @@ const IndexPage = () => {
   }, []);
 
   const orientationInfo = (
-    <ul>
       <li>
         ɑ: <code>{deviceOrientation.alpha}</code>
         b: <code>{deviceOrientation.beta}</code>
         c: <code>{deviceOrientation.gamma}</code>
       </li>
-    </ul>
   );
 
   return (
@@ -32,6 +30,7 @@ const IndexPage = () => {
       <div className="p-3">
         <div className="bg-white rounded p-3">
           <ul>{orientationInfo}</ul>
+          <button className="bg-white rounded p-3" onClick={() => socket.emit('click')}>Fire</button>
         </div>
       </div>
     </Layout>

@@ -28,6 +28,10 @@ nextApp.prepare().then(async () => {
 
     socket.on("gyrovalues", value => {
       console.log(value);
+    });
+    
+    socket.on("click", () => {
+      console.log('click');
     })
 
     socket.on("disconnect", () => {
