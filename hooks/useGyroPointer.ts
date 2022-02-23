@@ -12,8 +12,10 @@ const useGyroPointer = (): [PointerCoordinates, () => void] => {
   const [pointerCoordinates, setPointerCoordinates] =
     useState<PointerCoordinates>({ x: 0, y: 0 });
   const calibratedPoint = useRef([0, 0]);
+  const currentPoint = useRef([0, 0]);
   const calibratePoint = () => {
-    calibratedPoint.current = [pointerCoordinates.x, pointerCoordinates.y];
+    setPointerCoordinates({ x: 0, y: 0 });
+    calibratedPoint.current = currentPoint.current;
   };
 
   function handleDeviceOrientation(event) {
@@ -25,16 +27,18 @@ const useGyroPointer = (): [PointerCoordinates, () => void] => {
       "ZXY"
     );
 
-    const angles = toEuler(currentRotation.toVector());
+    let angles = toEuler(currentRotation.toVector());
     console.log(`Yaw: ${angles[0]}, Pitch: ${angles[1]}`);
 
-    let dist = angles.map((angle, i) =>
+    angles = angles.map((angle, i) =>
       calcDist(calibratedPoint.current[i], angle)
     );
 
+    currentPoint.current = angles;
+    
     setPointerCoordinates({
-      x: dist[0],
-      y: dist[1],
+      x: map(angles[0], -15, 15, -1, 1),
+      y: map(angles[1], -15, 15, -1, 1),
     });
   }
 
@@ -70,21 +74,19 @@ function toEuler(q) {
 }
 
 function calcDist(initAngle, angle) {
-  console.log(`Init: ${initAngle} , Fromangle: ${angle}`);
-
   angle = angle - initAngle;
-  console.log(`Angle difference: ${angle}`);
-  angle = angle < -180 ? angle + 180 : angle;
-  console.log(angle);
-  angle = angle > 180 ? angle - 180 : angle;
-  console.log(`Init: ${initAngle} , Currentangle: ${angle}`);
-
-  // angle = angle < 0 ? angle + 360 : angle;
-  // angle = angle > 180 ? angle - 360 : angle;
-  //let dist = Math.round(-800 * Math.tan(angle * (Math.PI / 180)));
-  //let dist = Math.atan2(Math.sin(angle-initAngle), Math.cos(angle-initAngle));
-  //let dist = Math.tan(angle * (Math.PI / 180));
+  angle = angle < -180 ? angle + 360 : angle;
+  angle = angle > 180 ? angle - 360 : angle;
   return angle;
+}
+
+function clamp(input: number, min: number, max: number): number {
+  return input < min ? min : input > max ? max : input;
+}
+
+function map(current: number, in_min: number, in_max: number, out_min: number, out_max: number): number {
+  const mapped: number = ((current - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
+  return clamp(mapped, out_min, out_max);
 }
 
 export default useGyroPointer;

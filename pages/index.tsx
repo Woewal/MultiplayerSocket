@@ -17,8 +17,8 @@ const IndexPage = () => {
   }, []);
   
   useEffect(() => {
-    const xDistance = ((pointerCoordinates.x / 180 + 1) * window.innerWidth / 2);
-    const yDistance = ((pointerCoordinates.y / 180 + 1) * window.innerHeight / 2);
+    const xDistance = ((pointerCoordinates.x + 1) * window.innerWidth / 2);
+    const yDistance = ((pointerCoordinates.y + 1) * window.innerHeight / 2);
     textInput.current.setAttribute("style", `top:${yDistance}px; left:${xDistance}px`);
   }, [pointerCoordinates])
 
