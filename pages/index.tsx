@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import { io, Socket } from "socket.io-client";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 const IndexPage = () => {
   const [alpha, setAlpha] = useState(0);
+  const [socket, setSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
   useEffect(() => {
     if (window.DeviceOrientationEvent) {
       window.addEventListener("deviceorientation", (event) => {
         setAlpha(event.alpha);
       });
+
+      const newSocket = io();
+      setSocket(newSocket);
     }
   }, []);
 

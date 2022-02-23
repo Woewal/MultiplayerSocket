@@ -20,6 +20,8 @@ nextApp.prepare().then(async () => {
   });
 
   io.on("connection", (socket: socketio.Socket) => {
+    console.log("Client connected");
+
     socket.on("joinroom", () => {
       console.log("test");
     });
