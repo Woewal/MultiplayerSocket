@@ -14,7 +14,7 @@ const IndexPage = () => {
 
     setInterval(() => {
       newSocket.emit("gyrovalues", deviceOrientation);
-    })
+    }, 1000)
   }, []);
 
   const orientationInfo = (
