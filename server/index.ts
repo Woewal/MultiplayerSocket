@@ -3,13 +3,12 @@ import * as https from "https";
 import * as http from "http";
 import next, { NextApiHandler } from "next";
 import * as socketio from "socket.io";
-import roomManager from "../lib/roommanager";
+import roomManager from "./../lib/roommanager";
 import pointerSocketInfo from "types/PointerSocketInfo";
 import clickSocketInfo from "types/ClickSocketInfo";
 import playerSocketInfo from "types/PlayerSocketInfo";
 import fs from "fs";
 import { ServerOptions } from "https";
-import roommanager from "../lib/roommanager";
 
 const port: number = parseInt(process.env.PORT || "3000", 10);
 const dev: boolean = process.env.NODE_ENV !== "production";
@@ -93,7 +92,7 @@ nextApp.prepare().then(async () => {
 		socket.on("disconnect", async () => {
 			const room = roomManager.rooms.find((x) => x.host.id == socket.id);
 			if (room) {
-				roommanager.rooms.filter((x) => x == room);
+				roomManager.rooms.filter((x) => x == room);
 
 				await socket
 					.to(room.id)
