@@ -104,7 +104,7 @@ nextApp.prepare().then(async () => {
 					});
 				console.log("room disconnected");
 			}
-			console.log("client disconnected");
+			console.log("client disconnectedt");
 		});
 	});
 
