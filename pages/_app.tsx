@@ -1,27 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AppProps } from "next/app";
-import { store } from "./../store/store";
 import { Provider } from "react-redux";
-import { SessionProvider } from "next-auth/react";
 import "../styles/index.css";
-import Header from "../components/Header";
+import { SocketContext } from "context/socket";
+import useSocketClient from "hooks/useSocketClient";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  return (
-    <>
-      <SessionProvider session={session}>
-        <Provider store={store}>
-          <div className="min-h-screen bg-purple-600">
-            <Header/>
+	const [socket, isConnected] = useSocketClient();
 
-            <div className="p-5 w-full">
-              <Component {...pageProps} />
-            </div>
-          </div>
-        </Provider>
-      </SessionProvider>
-    </>
-  );
+	return (
+		<>
+			<SocketContext.Provider value={{ socket, isConnected }}>
+				<div className="min-h-screen bg-purple-600">
+					<div className="p-5 w-full min-h-full">
+						<Component {...pageProps} />
+					</div>
+				</div>
+			</SocketContext.Provider>
+		</>
+	);
 }
 
 export default MyApp;

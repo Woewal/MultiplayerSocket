@@ -1,57 +1,64 @@
-import { DOMElement, useEffect, useRef, useState } from "react";
-import Layout from "../components/Layout";
-import { io, Socket } from "socket.io-client";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import useDeviceOrientation from "hooks/useDeviceOrientation";
-import useGyroPointer from "hooks/useGyroPointer";
+import Layout from "components/Layout";
+import { useRouter } from "next/router";
+import { ChangeEventHandler, useContext, useState } from "react";
+import { SocketContext } from "context/socket";
 
 const IndexPage = () => {
-  const [socket, setSocket] = useState<Socket>();
-  const [pointerCoordinates, calibratePoint] = useGyroPointer();
-  const deviceOrientation = useDeviceOrientation();
-  const textInput = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    const newSocket = io();
-    setSocket(newSocket);
-  }, []);
-  
-  useEffect(() => {
-    const xDistance = ((pointerCoordinates.x + 1) * window.innerWidth / 2);
-    const yDistance = ((pointerCoordinates.y + 1) * window.innerHeight / 2);
-    textInput.current.setAttribute("style", `top:${yDistance}px; left:${xDistance}px`);
-  }, [pointerCoordinates])
+	const router = useRouter();
+	const socketContext = useContext(SocketContext);
+	const [roomId, setRoomId] = useState("");
+	const [name, setName] = useState("");
 
-  const orientationInfo = (
-    <li>
-      x: <code>{pointerCoordinates.x}</code>
-      <br />
-      y: <code>{pointerCoordinates.y}</code>
-    </li>
-  );
+	const changeHandler = (event: React.FormEvent<HTMLInputElement>) => {
+		if (event.currentTarget.name == "name") setName(event.currentTarget.value);
+		else if (event.currentTarget.name == "roomcode")
+			setRoomId(event.currentTarget.value);
+	};
 
-  return (
-    <Layout title="Home | Next.js + TypeScript Example">
-      <div className="p-3">
-        <div className="bg-white rounded p-3">
-          <ul>{orientationInfo}</ul>
-          <button
-            className="bg-white rounded p-3"
-            onClick={() => socket.emit("click")}
-          >
-            Fire
-          </button>
-          <button
-            className="bg-white rounded p-3"
-            onClick={() => calibratePoint()}
-          >
-            Calibrate
-          </button>
-          <div className="fixed w-20 h-20 rounded bg-pink-500 top-0 left-0" ref={textInput}></div>
-        </div>
-      </div>
-    </Layout>
-  );
+	const createRoom = () => {
+		if (!socketContext.isConnected) {
+			alert("Not connected");
+			return;
+		}
+		socketContext.socket.emit("createroom", (roomid: number) => {
+			router.push(`/host/${roomid}`);
+		});
+	};
+
+	const joinRoom = () => {
+		if (!socketContext.isConnected) alert("Not connected");
+		socketContext.socket.emit("roomexists", roomId, (exists) => {
+			if (!exists) {
+				alert("Room doesn't exist");
+				return;
+			}
+			router.push(`/game/${roomId}`);
+		});
+	};
+
+	return (
+		<Layout title="Home | Next.js + TypeScript Example">
+			<div className="flex flex-col gap-3 p-3 bg-white rounded">
+				<h2 className="font-bold text-xl">Join game</h2>
+				<div className="flex gap-3">
+					<input
+						type="text"
+						name="roomcode"
+						placeholder="Room code"
+						className="border-2 rounded p-3 w-full"
+						value={roomId}
+						onChange={changeHandler}
+					/>
+					<button
+						className="bg-primary rounded p-3 text-white flex-none"
+						onClick={joinRoom}
+					>
+						Join room
+					</button>
+				</div>
+			</div>
+		</Layout>
+	);
 };
 
 export default IndexPage;

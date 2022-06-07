@@ -14,7 +14,6 @@ const useGyroPointer = (): [PointerCoordinates, () => void] => {
   const calibratedPoint = useRef([0, 0]);
   const currentPoint = useRef([0, 0]);
   const calibratePoint = () => {
-    console.log(`Old point: ${calibratedPoint.current}, new point: ${currentPoint.current}`);
     setPointerCoordinates({ x: 0, y: 0 });
     calibratedPoint.current = currentPoint.current;
   };
@@ -74,12 +73,9 @@ function toEuler(q) {
 }
 
 function calcDist(initAngle, angle) {
-  console.log(`Init angle: ${initAngle}, currentAngle: ${angle}`);
   angle = angle - initAngle;
-  console.log(`Relative angle: ${angle}`);
   angle = angle < -180 ? angle + 360 : angle;
   angle = angle > 180 ? angle - 360 : angle;
-  console.log(`Processed angle: ${angle}`);
   return angle;
 }
 
