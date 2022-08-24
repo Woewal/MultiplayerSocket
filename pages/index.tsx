@@ -15,31 +15,24 @@ const IndexPage = () => {
 			setRoomId(event.currentTarget.value);
 	};
 
-	const createRoom = () => {
-		if (!socketContext.isConnected) {
-			alert("Not connected");
-			return;
-		}
-		socketContext.socket.emit("createroom", (roomid: number) => {
-			router.push(`/host/${roomid}`);
-		});
-	};
-
 	const joinRoom = () => {
 		if (!socketContext.isConnected) alert("Not connected");
-		socketContext.socket.emit("roomexists", roomId, (exists) => {
+
+		const roomIdUpper = roomId.toUpperCase();
+
+		socketContext.socket.emit("roomexists", roomIdUpper, (exists) => {
 			if (!exists) {
 				alert("Room doesn't exist");
 				return;
 			}
-			router.push(`/game/${roomId}`);
+			router.push(`/${roomIdUpper}`);
 		});
 	};
 
 	return (
 		<Layout title="Home | Next.js + TypeScript Example">
-			<div className="flex flex-col gap-3 p-3 bg-white rounded">
-				<h2 className="font-bold text-xl">Join game</h2>
+			<div className="bg-white flex flex-col gap-3 p-3 bg-white rounded">
+				<h2 className="font-bold text-xl uppercase">Join game</h2>
 				<div className="flex gap-3">
 					<input
 						type="text"
@@ -50,7 +43,7 @@ const IndexPage = () => {
 						onChange={changeHandler}
 					/>
 					<button
-						className="bg-primary rounded p-3 text-white flex-none"
+						className="bg-secondary rounded p-3 text-white flex-none"
 						onClick={joinRoom}
 					>
 						Join room

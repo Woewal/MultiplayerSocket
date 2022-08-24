@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 	return (
 		<>
 			<SocketContext.Provider value={{ socket, isConnected }}>
-				<div className="min-h-screen bg-purple-600">
+				<div className="min-h-screen bg-primary">
 					<div className="p-5 w-full min-h-full">
 						<Component {...pageProps} />
 					</div>
